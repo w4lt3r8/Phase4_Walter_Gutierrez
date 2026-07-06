@@ -1,13 +1,17 @@
 """
-Frontend Streamlit — Chatbot de Bienestar y Promoción de la Salud
-Ejercicio 3 — Fase 4 (ECBTI)
+Streamlit Frontend — Wellness and Health Promotion Chatbot
+Exercise 3 — Phase 4 (ECBTI)
 
-Requiere que en la misma carpeta existan (exportados desde el notebook del Ejercicio 2):
+Requires the following files to be in the same folder (exported from the Exercise 2 notebook):
   - config.yaml
-  - kb_faiss_index/  (índice vectorial FAISS)
+  - kb_faiss_index/  (FAISS vector index)
 
-Ejecutar localmente:  streamlit run app.py
-Desplegar gratis en:  Streamlit Community Cloud o Hugging Face Spaces (ver DEPLOY.md)
+Run locally:
+  streamlit run app.py
+
+Deploy for free on:
+  Streamlit Community Cloud or Hugging Face Spaces (see DEPLOY.md)
+  
 """
 
 import os
@@ -22,9 +26,7 @@ from datetime import datetime, timezone
 import yaml
 import streamlit as st
 
-# ---------------------------------------------------------------------------
-# 1) Configuración centralizada
-# ---------------------------------------------------------------------------
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, "config.yaml")
 
@@ -41,9 +43,7 @@ def load_config():
 
 CONFIG = load_config()
 
-# ---------------------------------------------------------------------------
-# 2) Prompt engineering (mismas funciones que el backend, para consistencia)
-# ---------------------------------------------------------------------------
+
 CRISIS_PATTERNS = [
     r"\bquiero morir\b",
     r"\bquitarme la vida\b",
@@ -125,9 +125,7 @@ def build_prompt(query: str, context: str, history: str) -> str:
     )
 
 
-# ---------------------------------------------------------------------------
-# 3) Carga perezosa de embeddings, vectorstore y LLM (una sola vez por sesión de servidor)
-# ---------------------------------------------------------------------------
+
 @st.cache_resource(show_spinner="Cargando modelo de embeddings...")
 def get_embedding_model():
     from langchain_huggingface import HuggingFaceEmbeddings
@@ -214,9 +212,7 @@ def retrieve_context(query: str) -> str:
     return "\n\n".join(parts)
 
 
-# ---------------------------------------------------------------------------
-# 4) Registro (logging) estructurado
-# ---------------------------------------------------------------------------
+
 LOG_PATH = CONFIG["logging"]["log_path"]
 LOG_FIELDS = ["timestamp", "session_id", "topic", "query", "response",
               "escalated", "context_chars", "response_time_s"]
@@ -240,9 +236,7 @@ def log_interaction(session_id, topic, query, response, escalated, context_chars
         })
 
 
-# ---------------------------------------------------------------------------
-# 5) Estado de sesión: historial + memoria de corto plazo (ventana deslizante)
-# ---------------------------------------------------------------------------
+
 if "messages" not in st.session_state:
     st.session_state.messages = []  # para mostrar en la UI: [{"role": "user"/"assistant", "content": str}]
 if "turns" not in st.session_state:
@@ -263,9 +257,7 @@ def memory_as_text() -> str:
     return text[-max_chars:] if len(text) > max_chars else text
 
 
-# ---------------------------------------------------------------------------
-# 6) Interfaz Streamlit
-# ---------------------------------------------------------------------------
+
 st.set_page_config(page_title="Asistente de Bienestar", page_icon="🌱", layout="centered")
 
 st.title("🌱 Asistente de Bienestar y Promoción de la Salud")
