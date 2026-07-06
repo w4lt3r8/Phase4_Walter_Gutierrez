@@ -1,0 +1,19 @@
+llm:
+  provider: hf_api
+  model_name: Qwen/Qwen2.5-1.5B-Instruct
+  hf_api_model: Qwen/Qwen2.5-7B-Instruct
+  temperature: 0.4
+  max_new_tokens: 300
+  top_p: 0.9
+embeddings:
+  model_name: sentence-transformers/all-MiniLM-L6-v2
+rag:
+  chunk_size: 500
+  chunk_overlap: 80
+  top_k: 3
+  vectorstore_path: kb_faiss_index
+memory:
+  window_size: 5
+  max_context_chars: 3000
+logging:
+  log_path: chat_logs.csv

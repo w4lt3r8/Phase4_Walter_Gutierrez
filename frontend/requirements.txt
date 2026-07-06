@@ -1,0 +1,15 @@
+streamlit
+langchain
+langchain-community
+langchain-huggingface
+langchain-text-splitters
+transformers
+accelerate
+sentence-transformers
+faiss-cpu
+huggingface_hub
+pypdf
+beautifulsoup4
+requests
+pyyaml
+torch
